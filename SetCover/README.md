@@ -8,5 +8,4 @@ idea:
 before:
 
       c++ -o solve.out greedy.cpp
-
       c++ -o a.out main.cpp
