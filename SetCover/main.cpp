@@ -143,7 +143,7 @@ int sum(std::vector<bool>& sol, std::vector<int>& cost) {
     return ans;
 }
 
-int main() {
+int main(int argc, char** argv) {
     int n = 0, m = 0;
     // m - size of universal set
     // n - size of F
@@ -167,7 +167,7 @@ int main() {
     std::cout << "\n"; */
     std::vector<bool> sol(n, false);
     // random solution
-    {
+    /*{
         std::set<int> get;
         std::set<int> cov;
         for (int i = 0; i < n; i++) {
@@ -183,10 +183,10 @@ int main() {
         for (auto v: get) {
             sol[v] = true;
         }
-    } 
+    } */
     // random solution 
     // greedy solution
-    /* {
+    {
         std::ifstream init("init_sol.data");
         std::string line;
         std::getline(init, line);
@@ -198,9 +198,10 @@ int main() {
             i++;
         }
 
-    } */
+    }
     // greedy solution
     std::vector<bool> best_sol(n, true);
+    best_sol = sol;
     std::vector<int> covered(m, 0); 
     int ub = 0;
     for (int i = 0; i < n; i++) ub += sol[i] * cost[i];
@@ -228,11 +229,11 @@ int main() {
             }
         }
     }
-    int min_cost = 0;
+    int min_cost = 0; 
     std::deque<int> TABU;
     std::set<int> uncover;
     int MAX_TABU = 7;
-    int max_iter = 100000;
+    int max_iter = atoi(argv[1]);
     while (iter <= max_iter) {
         while (min(covered) >= 1) {
             ub = tot_cost;
@@ -290,7 +291,7 @@ int main() {
                     best_time = time[i];
                 }
             }
-            if (tot_cost + cost[i_best] >= ub) break;
+            if (tot_cost + cost[i_best] >= ub + min_cost) break;
             remove_col(i_best, data, scores, elig, covered, weight, sol, uncover, true);  
             tot_cost += cost[i_best];  
             for (int i = 0; i < m; i++) {
@@ -301,7 +302,7 @@ int main() {
             time[i_best] = iter;
         }
         iter += 1;
-        /* if (iter % 10 == 0) {
+        /* if (iter % 1000 == 0) {
             std::cout << "iter: " << iter << ": " << sum(best_sol, cost) << "\n";
             std::cout << "------------------------------------------------\n"; 
         } */
